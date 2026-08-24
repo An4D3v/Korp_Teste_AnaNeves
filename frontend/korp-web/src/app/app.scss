@@ -1,0 +1,78 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  gap: 24px;
+  background: linear-gradient(100deg, #16324f 0%, #1d4468 55%, #234e78 100%);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+
+  b {
+    font-weight: 600;
+  }
+}
+
+.menu {
+  display: flex;
+  gap: 4px;
+
+  a {
+    color: rgba(255, 255, 255, 0.82);
+
+    mat-icon {
+      margin-right: 6px;
+    }
+
+    &.ativo {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.16);
+    }
+  }
+}
+
+.espaco {
+  flex: 1 1 auto;
+}
+
+.saude {
+  display: flex;
+  gap: 8px;
+}
+
+.barra-global {
+  height: 3px;
+}
+
+.barra-global-vazia {
+  height: 3px;
+}
+
+.conteudo {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 20px 60px;
+}
+
+@media (max-width: 860px) {
+  .marca-texto,
+  .saude {
+    display: none;
+  }
+
+  .conteudo {
+    padding: 18px 12px 48px;
+  }
+}

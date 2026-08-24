@@ -1,0 +1,139 @@
+<a matButton routerLink="/notas" class="voltar">
+  <mat-icon>arrow_back</mat-icon>
+  Notas
+</a>
+
+@if (carregando()) {
+  <div class="centro"><mat-spinner diameter="36" /></div>
+} @else if (nota(); as n) {
+  <header class="cabecalho">
+    <div>
+      <h1>Nota fiscal nº {{ n.numero }}</h1>
+      <p class="legenda">
+        Criada em {{ n.criadaEm | date: 'dd/MM/yyyy HH:mm' }}
+        @if (n.impressaEm) {
+          · impressa em {{ n.impressaEm | date: 'dd/MM/yyyy HH:mm' }}
+        }
+      </p>
+    </div>
+    <korp-selo-status [status]="n.status" />
+  </header>
+
+  <!-- Aviso do que aconteceu na ultima tentativa, guardado pelo servidor. -->
+  @if (n.ultimoErro && n.status !== 'Fechada') {
+    <div class="alerta alerta-atencao">
+      <mat-icon>warning_amber</mat-icon>
+      <div>
+        <strong>A ultima tentativa de impressao nao foi concluida.</strong>
+        <p>{{ n.ultimoErro }}</p>
+      </div>
+    </div>
+  }
+
+  @if (n.status === 'Processando') {
+    <div class="alerta alerta-processando">
+      <mat-icon>hourglass_top</mat-icon>
+      <div>
+        <strong>Esta nota ficou em processamento.</strong>
+        <p>
+          O sistema pediu a baixa ao Estoque e nao conseguiu confirmar o desfecho. Nenhum saldo foi
+          perdido: clique em Imprimir de novo e o sistema descobre o que aconteceu antes de agir.
+          Se ninguem clicar, a regularizacao acontece sozinha em segundo plano.
+        </p>
+      </div>
+    </div>
+  }
+
+  <section class="cartao">
+    <div class="titulo-lista">
+      <h2>Produtos da nota</h2>
+      <span class="resumo">
+        {{ n.itens.length }} produto(s), {{ totalUnidades() }} unidade(s)
+      </span>
+    </div>
+
+    <table mat-table [dataSource]="n.itens" class="tabela">
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef>Codigo</th>
+        <td mat-cell *matCellDef="let i"><code>{{ i.codigo }}</code></td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descricao</th>
+        <td mat-cell *matCellDef="let i">{{ i.descricao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantidade">
+        <th mat-header-cell *matHeaderCellDef class="direita">Quantidade</th>
+        <td mat-cell *matCellDef="let i" class="direita"><strong>{{ i.quantidade }}</strong></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let l; columns: colunas"></tr>
+    </table>
+  </section>
+
+  <!-- Comprovante da baixa: o que saiu do estoque e qual o saldo agora. -->
+  @if (saldos().length > 0) {
+    <section class="cartao comprovante">
+      <h2>
+        <mat-icon>task_alt</mat-icon>
+        Saldo atualizado no Estoque
+        @if (foiRepetida()) {
+          <span class="marca-repetida">pedido repetido, nada foi baixado de novo</span>
+        }
+      </h2>
+      <ul>
+        @for (s of saldos(); track s.produtoId) {
+          <li>
+            <code>{{ s.codigo }}</code>
+            <span class="desc">{{ s.descricao }}</span>
+            <span class="mov">saiu {{ s.quantidade }}</span>
+            <span class="novo">saldo agora: <strong>{{ s.saldoResultante }}</strong></span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <div class="acoes">
+    @if (n.status === 'Fechada') {
+      <p class="fechada">
+        <mat-icon>lock</mat-icon>
+        Nota fechada. Uma nota impressa nao pode ser impressa de novo.
+      </p>
+    } @else {
+      <!-- Dois botoes em vez de um com conteudo condicional: o Angular projeta o
+           <mat-icon> num slot proprio do MatButton, e um @if no meio do conteudo
+           impediria essa projecao. Separar deixa cada estado explicito. -->
+      @if (imprimindo()) {
+        <button matButton="filled" class="botao-imprimir" disabled>
+          <mat-spinner diameter="18" class="spinner-botao" />
+          Processando...
+        </button>
+      } @else {
+        <button
+          matButton="filled"
+          class="botao-imprimir"
+          [disabled]="!podeImprimir()"
+          (click)="imprimir()"
+        >
+          <mat-icon>print</mat-icon>
+          Imprimir nota
+        </button>
+      }
+
+      @if (imprimindo()) {
+        <span class="dica-processando">
+          Falando com o servico de Estoque. Se ele estiver instavel, o sistema tenta de novo
+          sozinho antes de desistir.
+        </span>
+      }
+    }
+  </div>
+} @else {
+  <div class="centro">
+    <p>Nota nao encontrada.</p>
+    <a matButton="filled" routerLink="/notas">Voltar para a lista</a>
+  </div>
+}

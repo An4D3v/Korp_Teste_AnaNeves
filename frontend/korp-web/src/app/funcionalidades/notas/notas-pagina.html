@@ -1,0 +1,77 @@
+<header class="cabecalho">
+  <div>
+    <h1>Notas fiscais</h1>
+    <p class="legenda">Emissao e impressao. Este e o servico de Faturamento, na porta 5002.</p>
+  </div>
+  <a matButton="filled" routerLink="/notas/nova">
+    <mat-icon>note_add</mat-icon>
+    Nova nota
+  </a>
+</header>
+
+<mat-button-toggle-group
+  class="filtros"
+  [value]="filtro()"
+  (change)="filtrar($event.value)"
+  hideSingleSelectionIndicator
+>
+  <mat-button-toggle value="">Todas</mat-button-toggle>
+  <mat-button-toggle value="Aberta">Abertas</mat-button-toggle>
+  <mat-button-toggle value="Processando">Processando</mat-button-toggle>
+  <mat-button-toggle value="Fechada">Fechadas</mat-button-toggle>
+</mat-button-toggle-group>
+
+<div class="cartao">
+  <table mat-table [dataSource]="notas()" class="tabela">
+    <ng-container matColumnDef="numero">
+      <th mat-header-cell *matHeaderCellDef>Numero</th>
+      <td mat-cell *matCellDef="let n"><strong>#{{ n.numero }}</strong></td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let n"><korp-selo-status [status]="n.status" /></td>
+    </ng-container>
+
+    <ng-container matColumnDef="itens">
+      <th mat-header-cell *matHeaderCellDef>Produtos</th>
+      <td mat-cell *matCellDef="let n">
+        {{ n.itens.length }} produto(s), {{ totalItens(n) }} unidade(s)
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="criadaEm">
+      <th mat-header-cell *matHeaderCellDef>Criada em</th>
+      <td mat-cell *matCellDef="let n">{{ n.criadaEm | date: 'dd/MM/yy HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="impressaEm">
+      <th mat-header-cell *matHeaderCellDef>Impressa em</th>
+      <td mat-cell *matCellDef="let n">
+        {{ n.impressaEm ? (n.impressaEm | date: 'dd/MM/yy HH:mm') : '-' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef class="col-acoes"></th>
+      <td mat-cell *matCellDef="let n" class="col-acoes">
+        @if (n.status !== 'Fechada') {
+          <button matIconButton (click)="excluir(n, $event)" matTooltip="Excluir nota">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        }
+        <mat-icon class="seta">chevron_right</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+    <tr mat-row *matRowDef="let linha; columns: colunas" class="linha" (click)="abrir(linha)"></tr>
+  </table>
+
+  @if (notas().length === 0) {
+    <div class="vazio">
+      <mat-icon>description</mat-icon>
+      <p>Nenhuma nota por aqui.</p>
+    </div>
+  }
+</div>

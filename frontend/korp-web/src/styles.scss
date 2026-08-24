@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// Avisos (snackbar). A cor carrega significado: verde deu certo, ambar exige
+// atencao mas nada quebrou, vermelho a operacao nao aconteceu.
+// ---------------------------------------------------------------------------
+.aviso-sucesso {
+  --mdc-snackbar-container-color: #1f5c34;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #a5f3c0;
+}
+
+.aviso-atencao {
+  --mdc-snackbar-container-color: #6d4b00;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #ffd98a;
+}
+
+.aviso-erro {
+  --mdc-snackbar-container-color: #8c1d18;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #ffb4ab;
+}
+
+// O texto do aviso pode ser longo (as mensagens de indisponibilidade explicam
+// o que aconteceu e o que fazer). Sem isto ele fica cortado numa linha so.
+.mat-mdc-snack-bar-label {
+  line-height: 1.5;
+}

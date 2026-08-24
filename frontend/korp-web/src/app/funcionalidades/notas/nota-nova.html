@@ -1,0 +1,232 @@
+<header class="cabecalho">
+  <div>
+    <a matButton routerLink="/notas" class="voltar">
+      <mat-icon>arrow_back</mat-icon>
+      Notas
+    </a>
+    <h1>Nova nota fiscal</h1>
+    <p class="legenda">
+      O numero e gerado pelo servidor, em sequencia. A nota nasce com status Aberta.
+    </p>
+  </div>
+</header>
+
+<!-- ===================================================================
+     Montagem por texto. A interpretacao SUGERE; quem confirma e a pessoa.
+     Nada e gravado sem o clique em "Usar esta sugestao".
+     =================================================================== -->
+<section class="cartao cartao-ia">
+  <div class="titulo-lista">
+    <h2><mat-icon class="icone-ia">auto_awesome</mat-icon> Montar por texto</h2>
+    <button matButton (click)="exemplo()">
+      <mat-icon>lightbulb</mat-icon>
+      Ver um exemplo
+    </button>
+  </div>
+
+  <p class="legenda-ia">
+    Escreva o pedido do jeito que você falaria. O sistema procura os produtos no cadastro
+    e devolve uma sugestão para você conferir.
+  </p>
+
+  <div class="linha-ia">
+    <mat-form-field appearance="outline" class="campo-texto">
+      <mat-label>Pedido em texto</mat-label>
+      <textarea
+        matInput
+        rows="2"
+        maxlength="2000"
+        [ngModel]="textoLivre()"
+        (ngModelChange)="textoLivre.set($event)"
+        placeholder="3 canetas azuis, 2 cadernos e 1 grampeador"
+      ></textarea>
+    </mat-form-field>
+
+    @if (interpretando()) {
+      <button matButton="filled" class="botao-ia" disabled>
+        <mat-spinner diameter="18" class="spinner-botao" />
+        Interpretando...
+      </button>
+    } @else {
+      <button
+        matButton="filled"
+        class="botao-ia"
+        [disabled]="textoLivre().trim().length === 0"
+        (click)="interpretar()"
+      >
+        <mat-icon>auto_awesome</mat-icon>
+        Interpretar
+      </button>
+    }
+  </div>
+
+  @if (sugestao(); as s) {
+    <div class="sugestao">
+      <div class="sugestao-topo">
+        <span class="selo-modo" [class.offline]="s.modo === 'offline'">
+          {{ s.modo === 'ia' ? 'IA · ' + s.modelo : 'modo offline' }}
+        </span>
+        <span class="sugestao-resumo">
+          {{ s.itens.length }} produto(s) identificado(s)
+        </span>
+      </div>
+
+      @if (s.aviso) {
+        <p class="sugestao-aviso">
+          <mat-icon>warning_amber</mat-icon>
+          {{ s.aviso }}
+        </p>
+      }
+
+      @if (s.itens.length > 0) {
+        <ul class="sugestao-itens">
+          @for (i of s.itens; track i.produtoId) {
+            <li [class.acima]="i.acimaDoSaldo">
+              <code>{{ i.codigo }}</code>
+              <span class="desc">{{ i.descricao }}</span>
+              <span class="qtd">x{{ i.quantidade }}</span>
+              <span class="saldo">saldo {{ i.saldoAtual }}</span>
+              <span class="conf" [matTooltip]="'Veio de: ' + i.trecho">
+                {{ (i.confianca * 100) | number: '1.0-0' }}%
+              </span>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (s.naoEntendidos.length > 0) {
+        <div class="nao-entendi">
+          <strong>Não consegui identificar:</strong>
+          <ul>
+            @for (n of s.naoEntendidos; track n.trecho) {
+              <li>"{{ n.trecho }}" — {{ n.motivo }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      <div class="sugestao-acoes">
+        <button matButton (click)="descartarSugestao()">Descartar</button>
+        <button matButton="filled" [disabled]="s.itens.length === 0" (click)="aceitarSugestao()">
+          <mat-icon>check</mat-icon>
+          Usar esta sugestão
+        </button>
+      </div>
+    </div>
+  }
+</section>
+
+<section class="cartao">
+  <h2>Adicionar produtos</h2>
+
+  <div class="linha-form">
+    <mat-form-field appearance="outline" class="campo-produto">
+      <mat-label>Produto</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        [formControl]="buscaProduto"
+        [matAutocomplete]="auto"
+        placeholder="Digite o codigo ou a descricao"
+        autocomplete="off"
+      />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="exibirProduto">
+        @for (p of sugestoes(); track p.id) {
+          <mat-option [value]="p">
+            <span class="opcao">
+              <code>{{ p.codigo }}</code>
+              {{ p.descricao }}
+              <span class="saldo-opcao" [class.zerado]="p.saldo === 0">saldo {{ p.saldo }}</span>
+            </span>
+          </mat-option>
+        }
+        @if (sugestoes().length === 0) {
+          <mat-option disabled>Nenhum produto encontrado</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="campo-qtd">
+      <mat-label>Quantidade</mat-label>
+      <input
+        matInput
+        type="number"
+        min="1"
+        [ngModel]="quantidade()"
+        (ngModelChange)="quantidade.set($event)"
+      />
+    </mat-form-field>
+
+    <button matButton="tonal" class="botao-add" (click)="adicionar()">
+      <mat-icon>add</mat-icon>
+      Adicionar
+    </button>
+  </div>
+
+  @if (selecionado(); as p) {
+    <p class="dica-saldo">
+      <mat-icon>info</mat-icon>
+      {{ p.codigo }} tem <strong>{{ p.saldo }}</strong> em estoque agora. O saldo so e baixado na
+      impressao, entao ele ainda pode mudar ate la.
+    </p>
+  }
+</section>
+
+<section class="cartao">
+  <div class="titulo-lista">
+    <h2>Itens da nota</h2>
+    @if (itens().length > 0) {
+      <span class="resumo">
+        {{ itens().length }} produto(s), {{ totalUnidades() }} unidade(s)
+      </span>
+    }
+  </div>
+
+  @if (itens().length === 0) {
+    <div class="vazio">
+      <mat-icon>add_shopping_cart</mat-icon>
+      <p>Nenhum produto adicionado ainda.</p>
+    </div>
+  } @else {
+    <table mat-table [dataSource]="itens()" class="tabela">
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef>Codigo</th>
+        <td mat-cell *matCellDef="let i"><code>{{ i.codigo }}</code></td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descricao</th>
+        <td mat-cell *matCellDef="let i">{{ i.descricao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantidade">
+        <th mat-header-cell *matHeaderCellDef class="direita">Quantidade</th>
+        <td mat-cell *matCellDef="let i" class="direita"><strong>{{ i.quantidade }}</strong></td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef class="direita"></th>
+        <td mat-cell *matCellDef="let i; let idx = index" class="direita">
+          <button matIconButton (click)="remover(idx)" matTooltip="Remover">
+            <mat-icon>close</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let l; columns: colunas"></tr>
+    </table>
+  }
+
+  <div class="rodape">
+    <a matButton routerLink="/notas">Cancelar</a>
+    <button
+      matButton="filled"
+      [disabled]="itens().length === 0 || salvando()"
+      (click)="criar()"
+    >
+      <mat-icon>save</mat-icon>
+      {{ salvando() ? 'Criando...' : 'Criar nota' }}
+    </button>
+  </div>
+</section>

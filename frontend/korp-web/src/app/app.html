@@ -1,0 +1,37 @@
+<mat-toolbar class="topo">
+  <span class="marca">
+    <mat-icon>receipt_long</mat-icon>
+    <span class="marca-texto">Korp <b>Notas Fiscais</b></span>
+  </span>
+
+  <nav class="menu">
+    <a matButton routerLink="/produtos" routerLinkActive="ativo">
+      <mat-icon>inventory_2</mat-icon>
+      Produtos
+    </a>
+    <a matButton routerLink="/notas" routerLinkActive="ativo">
+      <mat-icon>description</mat-icon>
+      Notas
+    </a>
+  </nav>
+
+  <span class="espaco"></span>
+
+  <!-- Saude dos dois servicos ao vivo. Quando o Estoque cai, a bolinha fica
+       vermelha e piscando ANTES de a pessoa tentar imprimir e tomar erro. -->
+  <div class="saude">
+    <korp-indicador-servico nome="Estoque" [noAr]="saude.estoqueNoAr()" />
+    <korp-indicador-servico nome="Faturamento" [noAr]="saude.faturamentoNoAr()" />
+  </div>
+</mat-toolbar>
+
+<!-- Barra fininha que aparece enquanto houver qualquer chamada no ar. -->
+@if (ocupado() > 0) {
+  <mat-progress-bar mode="indeterminate" class="barra-global" />
+} @else {
+  <div class="barra-global-vazia"></div>
+}
+
+<main class="conteudo">
+  <router-outlet />
+</main>
