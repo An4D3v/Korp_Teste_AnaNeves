@@ -1,36 +1,28 @@
-<mat-toolbar class="topo">
-  <span class="marca">
-    <mat-icon>receipt_long</mat-icon>
-    <span class="marca-texto">Korp <b>Notas Fiscais</b></span>
-  </span>
+<header class="topo">
+  <a class="marca" routerLink="/produtos" aria-label="Korp Notas Fiscais">
+    <span class="marca-selo"><mat-icon>receipt_long</mat-icon></span>
+    <span class="marca-texto">Notas Fiscais</span>
+  </a>
 
   <nav class="menu">
-    <a matButton routerLink="/produtos" routerLinkActive="ativo">
-      <mat-icon>inventory_2</mat-icon>
-      Produtos
-    </a>
-    <a matButton routerLink="/notas" routerLinkActive="ativo">
-      <mat-icon>description</mat-icon>
-      Notas
-    </a>
+    <a routerLink="/produtos" routerLinkActive="ativo">Produtos</a>
+    <a routerLink="/notas" routerLinkActive="ativo">Notas</a>
   </nav>
 
-  <span class="espaco"></span>
-
-  <!-- Saude dos dois servicos ao vivo. Quando o Estoque cai, a bolinha fica
-       vermelha e piscando ANTES de a pessoa tentar imprimir e tomar erro. -->
+  <!-- Saúde dos dois serviços ao vivo. Quando o Estoque cai, o ponto fica
+       vermelho ANTES de a pessoa tentar imprimir e tomar erro. -->
   <div class="saude">
     <korp-indicador-servico nome="Estoque" [noAr]="saude.estoqueNoAr()" />
     <korp-indicador-servico nome="Faturamento" [noAr]="saude.faturamentoNoAr()" />
   </div>
-</mat-toolbar>
+</header>
 
-<!-- Barra fininha que aparece enquanto houver qualquer chamada no ar. -->
-@if (ocupado() > 0) {
-  <mat-progress-bar mode="indeterminate" class="barra-global" />
-} @else {
-  <div class="barra-global-vazia"></div>
-}
+<!-- Fio de progresso, na emenda exata entre o cabeçalho e o conteúdo. -->
+<div class="trilho">
+  @if (ocupado() > 0) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+</div>
 
 <main class="conteudo">
   <router-outlet />

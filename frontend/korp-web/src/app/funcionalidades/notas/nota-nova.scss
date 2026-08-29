@@ -1,90 +1,111 @@
-.cabecalho {
-  margin-bottom: 16px;
-
-  h1 {
-    margin: 8px 0 2px;
-    font-size: 26px;
-    font-weight: 500;
-  }
-}
-
 .voltar {
-  margin-left: -12px;
-}
-
-.legenda {
-  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--k-ink-3);
   font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
+  font-weight: 520;
+  transition: color 0.12s ease;
+
+  &:hover {
+    color: var(--k-ink);
+  }
+
+  mat-icon {
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+  }
 }
 
-.cartao {
-  background: var(--mat-sys-surface-container-low);
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 14px;
-  padding: 18px 20px;
-  margin-bottom: 18px;
-
-  h2 {
-    margin: 0 0 12px;
-    font-size: 16px;
-    font-weight: 600;
-  }
+.k-topo {
+  margin-top: 12px;
 }
 
 // ---------------------------------------------------------------------------
 // Montagem por texto
+//
+// É o único bloco com superfície própria na página, e de propósito: é o
+// caminho novo, o que a pessoa não conhece. Tudo o mais é fluxo comum.
 // ---------------------------------------------------------------------------
-.cartao-ia {
-  border-color: rgba(103, 58, 183, 0.35);
-  background: linear-gradient(160deg, rgba(103, 58, 183, 0.07), transparent 70%);
+.composicao {
+  background: var(--k-surface);
+  border: 1px solid var(--k-line);
+  border-radius: var(--k-r);
+  padding: 15px 17px 17px;
+}
 
-  h2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-  }
+.composicao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 11px;
+}
+
+.k-rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .icone-ia {
-  color: #5e35b1;
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  color: var(--k-accent);
 }
 
-.legenda-ia {
-  margin: 4px 0 14px;
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
+.link-exemplo {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--k-ink-3);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--k-ink);
+  }
 }
 
 .linha-ia {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  flex-wrap: wrap;
 }
 
 .campo-texto {
-  flex: 1 1 420px;
+  flex: 1;
+
+  textarea {
+    resize: none;
+    line-height: 1.5;
+  }
 }
 
 .botao-ia {
-  margin-top: 8px;
-  min-width: 170px;
+  height: 40px;
+  min-width: 118px;
+  flex: none;
 }
 
 .spinner-botao {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
+  --mdc-circular-progress-active-indicator-color: rgba(255, 255, 255, 0.85);
 }
 
+// --- resultado da interpretação -------------------------------------------
 .sugestao {
-  margin-top: 6px;
-  border: 1px solid rgba(103, 58, 183, 0.3);
-  border-radius: 12px;
-  background: var(--mat-sys-surface);
-  padding: 14px 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--k-line);
 }
 
 .sugestao-topo {
@@ -95,215 +116,204 @@
 }
 
 .selo-modo {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
+  font-size: 10.5px;
+  font-weight: 660;
+  letter-spacing: 0.7px;
   text-transform: uppercase;
-  background: rgba(103, 58, 183, 0.16);
-  color: #5e35b1;
-  padding: 3px 10px;
+  color: var(--k-accent);
+  border: 1px solid rgba(212, 24, 79, 0.28);
+  padding: 3px 9px;
   border-radius: 999px;
 
+  // Modo offline não é erro, é degradação prevista: informa sem alarmar.
   &.offline {
-    background: rgba(214, 146, 20, 0.18);
-    color: #8a5a00;
+    color: var(--k-ink-3);
+    border-color: var(--k-line);
   }
 }
 
 .sugestao-resumo {
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
+  font-size: 12.5px;
+  color: var(--k-ink-3);
 }
 
 .sugestao-aviso {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
   margin: 0 0 12px;
   padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(214, 146, 20, 0.14);
-  color: #7a4f00;
+  border-radius: var(--k-r-sm);
+  background: #fdf6e9;
+  border-left: 2px solid #c98a00;
+  color: #6b4a05;
   font-size: 13px;
-  line-height: 1.5;
-
-  mat-icon {
-    flex: none;
-    font-size: 19px;
-    width: 19px;
-    height: 19px;
-  }
+  line-height: 1.55;
 }
 
 .sugestao-itens {
   list-style: none;
   margin: 0 0 12px;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 
   li {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: var(--mat-sys-surface-container-low);
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--k-line-2);
+    font-size: 13.5px;
 
-    &.acima {
-      background: rgba(198, 40, 40, 0.1);
+    &:last-child {
+      border-bottom: none;
     }
   }
 
+  .desc {
+    flex: 1;
+    color: var(--k-ink-2);
+  }
+
   .qtd {
-    font-weight: 700;
+    font-weight: 620;
+    font-variant-numeric: tabular-nums;
   }
 
   .saldo,
   .conf {
     font-size: 12px;
-    color: var(--mat-sys-on-surface-variant);
+    color: var(--k-ink-3);
+    font-variant-numeric: tabular-nums;
   }
 
   .conf {
-    margin-left: auto;
+    width: 42px;
+    text-align: right;
     cursor: help;
+  }
+
+  // Quantidade acima do saldo: só o número muda de cor, sem pintar a linha.
+  .acima .qtd,
+  .acima .saldo {
+    color: var(--k-danger);
   }
 }
 
 .nao-entendi {
-  font-size: 13px;
-  color: #8a5a00;
+  font-size: 12.5px;
+  color: var(--k-warn);
   margin-bottom: 12px;
+  line-height: 1.6;
 
-  ul {
-    margin: 4px 0 0;
-    padding-left: 20px;
+  strong {
+    display: block;
+    color: var(--k-ink-2);
+    margin-bottom: 2px;
   }
 }
 
 .sugestao-acoes {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
 }
 
+// ---------------------------------------------------------------------------
+// Escolha manual
+// ---------------------------------------------------------------------------
 .linha-form {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  flex-wrap: wrap;
+  margin-top: 12px;
 }
 
 .campo-produto {
-  flex: 1 1 340px;
+  flex: 1;
+
+  mat-icon[matPrefix] {
+    color: var(--k-ink-3);
+    margin-right: 6px;
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
+  }
 }
 
 .campo-qtd {
-  width: 140px;
+  width: 88px;
+  flex: none;
+
+  input {
+    text-align: right;
+  }
 }
 
 .botao-add {
-  margin-top: 8px;
+  height: 40px;
+  flex: none;
 }
 
 .opcao {
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  code {
-    font-family: 'Cascadia Code', Consolas, monospace;
-    font-size: 12px;
-    background: var(--mat-sys-surface-container-high);
-    padding: 2px 7px;
-    border-radius: 5px;
-  }
+  gap: 11px;
+  width: 100%;
 }
 
-.saldo-opcao {
-  margin-left: auto;
-  font-size: 12px;
-  color: #2e7d46;
-  font-weight: 600;
+.opcao-desc {
+  flex: 1;
+  color: var(--k-ink-2);
+}
+
+.opcao-saldo {
+  font-variant-numeric: tabular-nums;
+  font-weight: 580;
+  color: var(--k-ink-2);
 
   &.zerado {
-    color: #c62828;
+    color: var(--k-danger);
   }
 }
 
 .dica-saldo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-  }
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: var(--k-ink-3);
 }
 
-.titulo-lista {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
+// ---------------------------------------------------------------------------
+// Itens e rodapé
+// ---------------------------------------------------------------------------
 .resumo {
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
-}
+  font-size: 12.5px;
+  color: var(--k-ink-3);
 
-.tabela {
-  width: 100%;
-  background: transparent;
-
-  code {
-    font-family: 'Cascadia Code', Consolas, monospace;
-    font-size: 13px;
-    background: var(--mat-sys-surface-container-high);
-    padding: 2px 8px;
-    border-radius: 6px;
+  .sep {
+    color: var(--k-ink-4);
+    margin: 0 3px;
   }
 }
 
-.direita {
-  text-align: right;
-}
-
-.vazio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 34px 16px;
-  color: var(--mat-sys-on-surface-variant);
-
-  mat-icon {
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-    opacity: 0.45;
-  }
-
-  p {
-    margin: 0;
-  }
+.qtd {
+  font-weight: 580;
 }
 
 .rodape {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--mat-sys-outline-variant);
+  gap: 8px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--k-line);
+}
+
+@media (max-width: 700px) {
+  .linha-ia,
+  .linha-form {
+    flex-direction: column;
+  }
+
+  .botao-ia,
+  .botao-add,
+  .campo-qtd {
+    width: 100%;
+  }
 }

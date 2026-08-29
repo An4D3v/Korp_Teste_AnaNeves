@@ -3,76 +3,130 @@
   min-height: 100%;
 }
 
+// ---------------------------------------------------------------------------
+// Cabeçalho: claro, chapado, e separado do conteúdo por um fio.
+// Sem gradiente e sem sombra — quem tem que chamar atenção é o conteúdo.
+// ---------------------------------------------------------------------------
 .topo {
   position: sticky;
   top: 0;
   z-index: 20;
-  gap: 24px;
-  background: linear-gradient(100deg, #16324f 0%, #1d4468 55%, #234e78 100%);
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  height: 56px;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(1.6) blur(10px);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .marca {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  letter-spacing: 0.2px;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--k-ink);
+  font-weight: 620;
+  font-size: 14.5px;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
 
-  b {
-    font-weight: 600;
+// O único uso do carmim da marca na tela inteira. É o que o torna um sotaque
+// em vez de decoração.
+.marca-selo {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--k-accent);
+  color: #fff;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 }
 
 .menu {
   display: flex;
-  gap: 4px;
+  gap: 22px;
+  flex: 1;
 
   a {
-    color: rgba(255, 255, 255, 0.82);
+    position: relative;
+    text-decoration: none;
+    color: var(--k-ink-2);
+    font-size: 13.5px;
+    font-weight: 520;
+    padding: 18px 0;
+    transition: color 0.12s ease;
 
-    mat-icon {
-      margin-right: 6px;
+    &:hover {
+      color: var(--k-ink);
     }
 
+    // A aba ativa é marcada por um traço no fio do cabeçalho, não por uma
+    // pastilha colorida. Sinaliza igual e não polui.
     &.ativo {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.16);
+      color: var(--k-ink);
+      font-weight: 600;
+    }
+
+    &.ativo::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: var(--k-ink);
+      border-radius: 2px 2px 0 0;
     }
   }
 }
 
-.espaco {
-  flex: 1 1 auto;
-}
-
 .saude {
   display: flex;
-  gap: 8px;
+  gap: 16px;
 }
 
-.barra-global {
-  height: 3px;
-}
+// O trilho reserva a altura da barra de progresso o tempo todo, então a
+// página não pula 4px para baixo toda vez que uma requisição começa.
+.trilho {
+  position: sticky;
+  top: 56px;
+  z-index: 19;
+  height: 2px;
 
-.barra-global-vazia {
-  height: 3px;
+  mat-progress-bar {
+    height: 2px;
+    --mdc-linear-progress-active-indicator-color: var(--k-accent);
+    --mdc-linear-progress-track-color: transparent;
+  }
 }
 
 .conteudo {
-  max-width: 1180px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 26px 20px 60px;
+  padding: 32px 24px 80px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
+  .topo {
+    gap: 18px;
+    padding: 0 16px;
+  }
+
   .marca-texto,
   .saude {
     display: none;
   }
 
   .conteudo {
-    padding: 18px 12px 48px;
+    padding: 22px 16px 60px;
   }
 }

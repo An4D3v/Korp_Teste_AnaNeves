@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -28,7 +27,6 @@ import { NotificacaoService } from '../../nucleo/servicos/notificacao.service';
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatButtonToggleModule,
     MatTooltipModule,
     SeloStatus,
   ],
@@ -41,6 +39,14 @@ export class NotasPagina implements OnInit, OnDestroy {
   private readonly router = inject(Router);
 
   protected readonly colunas = ['numero', 'status', 'itens', 'criadaEm', 'impressaEm', 'acoes'];
+
+  /** Opcoes do filtro de status, na ordem em que a nota caminha. */
+  protected readonly filtros: { valor: StatusNota | ''; rotulo: string }[] = [
+    { valor: '', rotulo: 'Todas' },
+    { valor: 'Aberta', rotulo: 'Abertas' },
+    { valor: 'Processando', rotulo: 'Processando' },
+    { valor: 'Fechada', rotulo: 'Fechadas' },
+  ];
   protected readonly notas = signal<Nota[]>([]);
   protected readonly filtro = signal<StatusNota | ''>('');
 

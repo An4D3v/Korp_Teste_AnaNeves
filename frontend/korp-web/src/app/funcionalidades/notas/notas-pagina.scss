@@ -1,82 +1,90 @@
-.cabecalho {
+.barra-filtro {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
+}
 
-  h1 {
-    margin: 0 0 2px;
-    font-size: 26px;
-    font-weight: 500;
-    letter-spacing: -0.2px;
+// Filtro como texto, não como grupo de botões. Um seletor de status é
+// navegação, não um formulário: não precisa de moldura.
+.filtros {
+  display: flex;
+  gap: 4px;
+}
+
+.filtro {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 520;
+  color: var(--k-ink-3);
+  padding: 6px 11px;
+  border-radius: var(--k-r-sm);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    color: var(--k-ink);
+    background: var(--k-sunken);
+  }
+
+  &.ativo {
+    color: var(--k-ink);
+    background: var(--k-sunken);
+    font-weight: 600;
   }
 }
 
-.legenda {
-  margin: 0;
+.contagem {
+  font-size: 12.5px;
+  color: var(--k-ink-3);
+  white-space: nowrap;
+}
+
+// O número da nota é a identidade dela: merece peso.
+.numero {
+  font-weight: 620;
+  font-variant-numeric: tabular-nums;
+}
+
+.cel-itens {
+  color: var(--k-ink-2);
+  font-size: 13.5px;
+
+  .sep {
+    color: var(--k-ink-4);
+    margin: 0 5px;
+  }
+}
+
+.cel-data {
+  color: var(--k-ink-2);
   font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
-}
-
-.filtros {
-  margin-bottom: 16px;
-}
-
-.cartao {
-  background: var(--mat-sys-surface-container-low);
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.tabela {
-  width: 100%;
-  background: transparent;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .linha {
   cursor: pointer;
-  transition: background 0.12s ease;
 
   &:hover {
-    background: var(--mat-sys-surface-container-high);
+    background: var(--k-sunken);
   }
 }
 
-.col-acoes {
-  width: 110px;
-  text-align: right;
-  white-space: nowrap;
-}
-
-.seta {
-  vertical-align: middle;
-  opacity: 0.4;
-}
-
-.vazio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 42px 16px;
-  color: var(--mat-sys-on-surface-variant);
-
-  mat-icon {
-    font-size: 38px;
-    width: 38px;
-    height: 38px;
-    opacity: 0.45;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
-@media (max-width: 620px) {
-  .cabecalho {
+@media (max-width: 760px) {
+  .barra-filtro {
+    align-items: flex-start;
     flex-direction: column;
+  }
+
+  .filtros {
+    flex-wrap: wrap;
+  }
+
+  .contagem {
+    display: none;
   }
 }

@@ -1,31 +1,44 @@
 import { Component, Input } from '@angular/core';
 import { StatusNota } from '../nucleo/modelos';
 
-/** Selo colorido do status da nota, usado na lista e no detalhe. */
+/**
+ * Status da nota: um ponto e a palavra.
+ *
+ * Trocado de pastilha preenchida para ponto + texto de proposito. Numa lista
+ * de vinte notas, vinte pastilhas coloridas viram um mosaico e o olho para de
+ * distinguir uma da outra. O ponto informa igual e devolve o silencio a tela.
+ */
 @Component({
   selector: 'korp-selo-status',
-  template: `<span class="selo" [class]="'selo-' + status.toLowerCase()">{{ status }}</span>`,
+  template: `
+    <span class="selo" [class]="'s-' + status.toLowerCase()">
+      <span class="k-ponto"></span>{{ status }}
+    </span>
+  `,
   styles: `
     .selo {
-      display: inline-block;
-      padding: 3px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12.5px;
+      font-weight: 560;
+      color: var(--k-ink-2);
+      white-space: nowrap;
     }
-    .selo-aberta {
-      background: rgba(214, 146, 20, 0.18);
-      color: #8a5a00;
+    .s-aberta .k-ponto {
+      background: #c98a00;
     }
-    .selo-processando {
-      background: rgba(103, 58, 183, 0.16);
-      color: #5e35b1;
+    .s-processando .k-ponto {
+      background: #5a68c9;
+      animation: piscar 1.3s ease-in-out infinite;
     }
-    .selo-fechada {
-      background: rgba(46, 125, 70, 0.16);
-      color: #2e7d46;
+    .s-fechada .k-ponto {
+      background: #22a06b;
+    }
+    @keyframes piscar {
+      50% {
+        opacity: 0.3;
+      }
     }
   `,
 })

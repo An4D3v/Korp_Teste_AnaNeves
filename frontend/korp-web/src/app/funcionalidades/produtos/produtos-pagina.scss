@@ -1,107 +1,63 @@
-.cabecalho {
+.barra-busca {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
-
-  h1 {
-    margin: 0 0 2px;
-    font-size: 26px;
-    font-weight: 500;
-    letter-spacing: -0.2px;
-  }
-}
-
-.legenda {
-  margin: 0;
-  font-size: 13px;
-  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 8px;
 }
 
 .busca {
   width: 100%;
-  max-width: 460px;
-}
+  max-width: 340px;
 
-.cartao {
-  background: var(--mat-sys-surface-container-low);
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.tabela {
-  width: 100%;
-  background: transparent;
-
-  code {
-    font-family: 'Cascadia Code', Consolas, monospace;
-    font-size: 13px;
-    background: var(--mat-sys-surface-container-high);
-    padding: 2px 8px;
-    border-radius: 6px;
+  mat-icon[matPrefix] {
+    color: var(--k-ink-3);
+    margin-right: 6px;
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
   }
 }
 
-.col-saldo {
-  width: 110px;
-  text-align: right;
-}
-
-.col-acoes {
-  width: 110px;
-  text-align: right;
+.contagem {
+  font-size: 12.5px;
+  color: var(--k-ink-3);
   white-space: nowrap;
 }
 
-.pastilha {
-  display: inline-block;
-  min-width: 42px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 13px;
-  text-align: center;
+.cel-desc {
+  color: var(--k-ink);
 }
 
-.saldo-ok {
-  background: rgba(46, 125, 70, 0.16);
-  color: #2e7d46;
+// O saldo é o dado mais consultado desta tela, então ganha um pouco mais de
+// peso que o resto da linha — mas continua preto até haver motivo para cor.
+.saldo {
+  font-weight: 580;
+  font-variant-numeric: tabular-nums;
 }
 
 .saldo-baixo {
-  background: rgba(214, 146, 20, 0.18);
-  color: #a56b00;
+  color: var(--k-warn);
 }
 
+// Zerado é o único estado que muda o que a pessoa faz a seguir, então é o
+// único que recebe destaque de verdade.
 .saldo-zero {
-  background: rgba(198, 40, 40, 0.16);
-  color: #c62828;
+  color: var(--k-danger);
+  font-weight: 620;
 }
 
-.vazio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 42px 16px;
-  color: var(--mat-sys-on-surface-variant);
-
-  mat-icon {
-    font-size: 38px;
-    width: 38px;
-    height: 38px;
-    opacity: 0.45;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
-@media (max-width: 620px) {
-  .cabecalho {
+@media (max-width: 700px) {
+  .barra-busca {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .busca {
+    max-width: none;
+  }
+
+  .contagem {
+    display: none;
   }
 }

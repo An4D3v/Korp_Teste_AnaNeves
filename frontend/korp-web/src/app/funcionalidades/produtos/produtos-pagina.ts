@@ -196,9 +196,10 @@ export class ProdutosPagina implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  /** Saldo normal nao recebe classe: fica preto, como qualquer outro numero. */
   protected classeSaldo(saldo: number): string {
     if (saldo === 0) return 'saldo-zero';
     if (saldo <= 3) return 'saldo-baixo';
-    return 'saldo-ok';
+    return '';
   }
 }

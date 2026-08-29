@@ -1,69 +1,60 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  signal,
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, signal } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
- * Bolinha de status de um servico na barra do topo.
+ * Estado de um servico na barra do topo: um ponto e o nome.
  *
  * Este componente existe tambem para demonstrar o ciclo de vida ngOnChanges:
  * ele nao guarda estado proprio de negocio, ele REAGE a mudanca do @Input.
- * Quando o servico cai ou volta, o texto e a cor sao recalculados aqui,
+ * Quando o servico cai ou volta, a cor e o texto sao recalculados aqui,
  * e nao espalhados pelo template do pai.
  */
 @Component({
   selector: 'korp-indicador-servico',
   imports: [MatTooltipModule],
   template: `
-    <span class="indicador" [class]="classe()" [matTooltip]="dica()">
-      <span class="bolinha"></span>
+    <span class="ind" [class]="classe()" [matTooltip]="dica()">
+      <span class="k-ponto"></span>
       {{ nome }}
     </span>
   `,
   styles: `
-    .indicador {
+    .ind {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
+      gap: 7px;
+      font-size: 12.5px;
       font-weight: 500;
-      padding: 3px 10px 3px 8px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
+      color: var(--k-ink-2);
       white-space: nowrap;
     }
-    .bolinha {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #bdbdbd;
-      flex: none;
+    .k-ponto {
+      background: var(--k-ink-4);
     }
-    .no-ar .bolinha {
-      background: #69f0ae;
-      box-shadow: 0 0 6px #69f0ae;
+    /* No ar e o estado normal: o ponto e discreto, quase nao se nota.
+       Interface boa nao comemora o funcionamento esperado. */
+    .no-ar .k-ponto {
+      background: #22a06b;
     }
-    .fora .bolinha {
-      background: #ff5252;
-      box-shadow: 0 0 6px #ff5252;
-      animation: pulsar 1.1s ease-in-out infinite;
-    }
+    /* Fora do ar precisa saltar. Cor forte, halo e pulso. */
     .fora {
-      background: rgba(255, 82, 82, 0.28);
+      color: var(--k-danger);
+      font-weight: 560;
+    }
+    .fora .k-ponto {
+      background: var(--k-danger);
+      box-shadow: 0 0 0 3px rgba(180, 40, 60, 0.16);
+      animation: pulsar 1.15s ease-in-out infinite;
     }
     @keyframes pulsar {
       50% {
-        opacity: 0.35;
+        opacity: 0.32;
       }
     }
   `,
 })
 export class IndicadorServico implements OnChanges {
-  /** Nome curto exibido ao lado da bolinha. */
+  /** Nome curto exibido ao lado do ponto. */
   @Input({ required: true }) nome!: string;
 
   /** null = ainda verificando, true = no ar, false = fora do ar. */
