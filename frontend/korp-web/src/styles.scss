@@ -41,6 +41,8 @@ html {
   // --- linhas ------------------------------------------------------------
   --k-line:     #eceef2;   // fio de cabelo padrão, bem lavado
   --k-line-2:   #f4f5f8;   // divisória entre linhas, quase invisível
+  --k-borda-campo: #d8dde4; // contorno de input: precisa ser visível, senão
+                            // o campo não parece preenchível
 
   // --- cor com significado ----------------------------------------------
   --k-accent:   #d4184f;   // sotaque da marca. Usado com parcimônia.
@@ -73,7 +75,11 @@ html {
   --mat-sys-surface-container-high: var(--k-sunken);
   --mat-sys-surface-container-highest: var(--k-sunken);
 
-  --mat-sys-outline: var(--k-line);
+  // O Material 3 separa os dois de proposito, e eu tinha apagado a distincao:
+  //   outline         = contorno de coisa interativa (input, botao vazado)
+  //   outline-variant = divisoria passiva (linha de tabela, separador)
+  // Igualar os dois deixa o campo de formulario sem borda visivel.
+  --mat-sys-outline: var(--k-borda-campo);
   --mat-sys-outline-variant: var(--k-line);
 
   --mat-sys-error: var(--k-danger);
@@ -284,8 +290,8 @@ body {
 
 // Campo de formulário mais discreto: a borda é fio, não moldura.
 .mat-mdc-form-field {
-  --mdc-outlined-text-field-outline-color: var(--k-line);
-  --mdc-outlined-text-field-hover-outline-color: #d6dae1;
+  --mdc-outlined-text-field-outline-color: var(--k-borda-campo);
+  --mdc-outlined-text-field-hover-outline-color: #b9c1cc;
   --mdc-outlined-text-field-focus-outline-color: var(--k-ink);
   --mdc-outlined-text-field-outline-width: 1px;
   --mdc-outlined-text-field-focus-outline-width: 1px;
