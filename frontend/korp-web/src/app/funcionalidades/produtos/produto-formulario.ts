@@ -49,10 +49,6 @@ export interface DadosFormularioProduto {
             <mat-error>Informe o código do produto.</mat-error>
           } @else if (editando) {
             <mat-hint>O código não muda depois que o produto é criado.</mat-hint>
-          } @else if (sugestao() && !form.controls.codigo.value) {
-            <mat-hint>
-              Próximo livre: <b>{{ sugestao() }}</b> — Tab preenche
-            </mat-hint>
           }
         </mat-form-field>
 
@@ -87,11 +83,6 @@ export interface DadosFormularioProduto {
       min-width: 350px;
       padding-top: 8px;
     }
-    mat-hint b {
-      font-family: 'Cascadia Code', Consolas, monospace;
-      font-weight: 600;
-      color: var(--k-ink);
-    }
   `,
 })
 export class ProdutoFormulario implements OnInit {
@@ -102,7 +93,14 @@ export class ProdutoFormulario implements OnInit {
 
   protected readonly editando = !!this.dados?.produto;
 
-  /** Próximo código livre da sequência. Vazio quando não deu para deduzir. */
+  /**
+   * Próximo código livre da sequência. Vazio quando não deu para deduzir.
+   *
+   * Aparece só como placeholder, sem texto de ajuda embaixo do campo. Uma linha
+   * explicando um atalho que ninguém pediu é ruído permanente para todo mundo,
+   * em troca de ensinar uma tecla. Quem apertar Tab ganha o preenchimento;
+   * quem não apertar nem percebe que existia.
+   */
   protected readonly sugestao = signal('');
 
   protected readonly form = this.fb.nonNullable.group({
