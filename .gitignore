@@ -23,6 +23,11 @@ npm-debug.log*
 .claude/
 .idea/
 
+# ---------- Video da entrega ----------
+# A gravacao crua tem 466 MB e o corte final vai por link na nuvem, nao pelo repo.
+*.mp4
+*.mkv
+
 # ---------- Notas pessoais ----------
 # Rascunho de planejamento e ferramenta de gravacao: nao fazem parte da entrega.
 docs/00_entenda_o_fluxo.html
